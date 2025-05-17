@@ -64,15 +64,28 @@ const buscarCategorias = () => {
 
 const adicionarCategoria = () => {
     var categoria = document.getElementById('nomeCategoria').value
-
-    if(categoria.length == 0 || categoria.trim() === ''){
+    var status = true
+    categoria = categoria.trim();
+    if (categoria.length == 0 || categoria.trim() === '') {
         return alert('A categoria não pode ser vazia')
     }
 
     var categoriasExistentes = window.gastosAPI.obterCategorias();
-    categoriasExistentes.push({nome : categoria});
-    window.gastosAPI.adicionarCategoria(categoriasExistentes)
-    console.log("CATEGORIA ADICIONADA: " + categoria)
+
+    categoriasExistentes.forEach(ExistCategoria => {
+        if (ExistCategoria.nome.toUpperCase() == categoria.toUpperCase()) {
+            alert('Categoria já cadastrada');
+            status = false
+            return
+        }
+    })
+
+    if (status) {
+        categoriasExistentes.push({ nome: categoria });
+        window.gastosAPI.adicionarCategoria(categoriasExistentes)
+        console.log("CATEGORIA ADICIONADA: " + categoria)
+    }
+
 }
 
 const effect = () => {
